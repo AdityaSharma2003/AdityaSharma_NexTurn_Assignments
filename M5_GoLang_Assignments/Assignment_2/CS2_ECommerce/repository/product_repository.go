@@ -44,25 +44,6 @@ func (repo *ProductRepository) GetProduct(id int) (*model.Product, error) {
 	return product, nil
 }
 
-// func (repo *ProductRepository) GetAllProducts() ([]model.Product, error) {
-// 	rows, err := repo.DB.Query("SELECT * FROM products")
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer rows.Close()
-
-// 	var products []model.Product
-// 	for rows.Next() {
-// 		var product model.Product
-// 		err := rows.Scan(&product.ID, &product.Name, &product.Decription, &product.Price, &product.Stock, &product.Category_ID)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		products = append(products, product)
-// 	}
-// 	return products, nil
-// }
-
 func (repo *ProductRepository) GetAllProducts(page, limit int) ([]model.Product, error) {
 	offset := (page - 1) * limit
 	query := "SELECT * FROM products LIMIT ? OFFSET ?"

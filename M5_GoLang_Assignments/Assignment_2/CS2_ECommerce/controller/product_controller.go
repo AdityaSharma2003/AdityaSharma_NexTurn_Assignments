@@ -50,22 +50,10 @@ func (controller *ProductController) GetProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, product)
 }
 
-// func (controller *ProductController) GetAllProducts(c *gin.Context) {
-// 	products, err := controller.ProductService.GetAllProducts()
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, products)
-// }
-
 func (controller *ProductController) GetAllProducts(c *gin.Context) {
-	// Get `page` and `limit` from query parameters
 	page := c.DefaultQuery("page", "1")
 	limit := c.DefaultQuery("limit", "10")
 
-	// Convert `page` and `limit` to integers
 	pageInt, err := strconv.Atoi(page)
 	if err != nil || pageInt < 1 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page parameter"})
@@ -78,7 +66,6 @@ func (controller *ProductController) GetAllProducts(c *gin.Context) {
 		return
 	}
 
-	// Fetch paginated products
 	products, err := controller.ProductService.GetAllProducts(pageInt, limitInt)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

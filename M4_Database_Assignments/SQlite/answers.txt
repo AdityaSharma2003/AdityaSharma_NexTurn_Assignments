@@ -1,0 +1,80 @@
+//Creating table Departments in management.db
+create table Departments
+(DepartmentID integer primary key,
+DepartmentName text not null);
+
+
+//Creating Employees table in management.db
+create table Employees
+(EmployeeID integer primary key autoincrement,
+Name text not null,
+DepartmentID integer,
+Salary real,
+HireDate text,
+foreign key(DepartmentID) references department(DepartmentID)
+on delete cascade on update cascade);
+
+
+//Inserting data in Departments table
+insert into Departments(DepartmentID,DepartmentName) values(101,'HR');
+insert into Departments(DepartmentID,DepartmentName) values(102,'IT');
+insert into Departments(DepartmentID,DepartmentName) values(103,'Finance');
+insert into Departments(DepartmentID,DepartmentName) values(104,'Marketing');
+insert into Departments(DepartmentID,DepartmentName) values(105,'Support');
+
+
+//Inserting data in Employees table
+insert into Employees(Name,DepartmentID,Salary,HireDate) values('Alice',101,70000,'2021-01-15');
+insert into Employees(Name,DepartmentID,Salary,HireDate) values('Bob',102,60000,'2020-03-10');
+insert into Employees(Name,DepartmentID,Salary,HireDate) values('Charlie',101,80000,'2022-05-20');
+insert into Employees(Name,DepartmentID,Salary,HireDate) values('Diana',103,75000,'2019-07-25');
+
+
+Queries
+
+Q1. Write a query to list the names of employees hired after January 1, 2021.
+
+select * 
+from Employees
+where HireDate > '2021-01-01';
+
+
+
+Q2. Write a query to calculate the average salary of employees in each department.
+
+select d.DepartmentName, avg(e.Salary)
+from Employees as e
+inner join Departments as d
+on e.DepartmentID = d.DepartmentID
+group by d.DepartmentName;
+
+
+
+Q3. Write a query to find the department name where the total salary is the highest.
+
+select d.DepartmentName, sum(e.Salary) as totalSalary
+from Employees as e
+inner join Departments as d
+on e.DepartmentID = d.DepartmentID
+group by d.DepartmentName
+order by totalSalary desc
+limit 1;
+
+
+
+Q4. Write a query to list all departments that currently have no employees assigned.
+
+select d.DepartmentName
+from Departments as d
+left join Employees as e
+on d.DepartmentID = e.DepartmentID
+where e.DepartmentID is null;
+
+
+
+Q5. Write a query to fetch all employee details along with their department names.
+
+select e.*, d.DepartmentName
+from Employees as e
+inner join Departments as d
+on e.DepartmentID = d.DepartmentID;

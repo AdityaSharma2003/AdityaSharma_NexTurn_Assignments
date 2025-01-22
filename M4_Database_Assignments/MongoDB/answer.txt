@@ -1,49 +1,47 @@
-//Switching to the new database
+// Switching to the new database
 use ecommerceDB;
 
-//Creating new collections
+// Creating new collections
 db.createCollection("users");
 db.createCollection("orders");
 db.createCollection("products");
 db.createCollection("warehouses");
 
-
-
-//Inserting data to the users collection
+// Inserting data to the users collection
 db.users.insertMany([
   {
     userId: "U001",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    age: 28,
+    name: "Arjun Sharma",
+    email: "arjun.sharma@example.com",
+    age: 29,
     address: {
-      city: "New York",
-      state: "NY",
-      zip: "10001"
+      city: "Delhi",
+      state: "Delhi",
+      zip: "110001"
     },
     createdAt: new ISODate("2024-01-01T10:00:00Z")
   },
   {
     userId: "U002",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    age: 32,
+    name: "Priya Mehta",
+    email: "priya.mehta@example.com",
+    age: 30,
     address: {
-      city: "San Francisco",
-      state: "CA",
-      zip: "94101"
+      city: "Mumbai",
+      state: "Maharashtra",
+      zip: "400001"
     },
     createdAt: new ISODate("2024-02-01T12:00:00Z")
   },
   {
     userId: "U003",
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    age: 25,
+    name: "Rajesh Gupta",
+    email: "rajesh.gupta@example.com",
+    age: 26,
     address: {
-      city: "Chicago",
-      state: "IL",
-      zip: "60601"
+      city: "Bengaluru",
+      state: "Karnataka",
+      zip: "560001"
     },
     createdAt: new ISODate("2024-03-15T09:30:00Z")
   }
@@ -51,19 +49,17 @@ db.users.insertMany([
 
 
 
-
-
-//Inserting data to the orders collection
+// Inserting data to the orders collection
 db.orders.insertMany([
   {
     orderId: "ORD001",
     userId: "U001",
     orderDate: new ISODate("2024-12-10T14:32:00Z"),
     items: [
-      { productId: "P001", quantity: 2, price: 100 },
-      { productId: "P002", quantity: 1, price: 50 }
+      { productId: "P001", quantity: 2, price: 1500 },
+      { productId: "P002", quantity: 1, price: 2000 }
     ],
-    totalAmount: 250,
+    totalAmount: 5000,
     status: "Delivered"
   },
   {
@@ -71,10 +67,10 @@ db.orders.insertMany([
     userId: "U002",
     orderDate: new ISODate("2024-12-05T16:20:00Z"),
     items: [
-      { productId: "P001", quantity: 3, price: 150 },
-      { productId: "P003", quantity: 1, price: 200 }
+      { productId: "P001", quantity: 1, price: 1500 },
+      { productId: "P003", quantity: 2, price: 10000 }
     ],
-    totalAmount: 350,
+    totalAmount: 21500,
     status: "Delivered"
   },
   {
@@ -82,10 +78,10 @@ db.orders.insertMany([
     userId: "U003",
     orderDate: new ISODate("2024-12-20T10:15:00Z"),
     items: [
-      { productId: "P002", quantity: 4, price: 200 },
-      { productId: "P003", quantity: 2, price: 400 }
+      { productId: "P002", quantity: 2, price: 4000 },
+      { productId: "P003", quantity: 1, price: 5000 }
     ],
-    totalAmount: 600,
+    totalAmount: 13000,
     status: "Shipped"
   }
 ]);
@@ -93,55 +89,52 @@ db.orders.insertMany([
 
 
 
-
-//Inserting data to the products collection
+// Inserting data to the products collection
 db.products.insertMany([
   {
     productId: "P001",
-    name: "Wireless Mouse",
+    name: "Smartphone",
     category: "Electronics",
-    price: 50,
-    stock: 200,
+    price: 1500,
+    stock: 300,
     ratings: [
-      { userId: "U002", rating: 4.5 },
-      { userId: "U003", rating: 3.0 }
+      { userId: "U002", rating: 4.7 },
+      { userId: "U003", rating: 4.2 }
     ]
   },
   {
     productId: "P002",
-    name: "Keyboard",
-    category: "Electronics",
-    price: 50,
-    stock: 150,
+    name: "Wireless Earbuds",
+    category: "Accessories",
+    price: 2000,
+    stock: 200,
     ratings: [
-      { userId: "U001", rating: 4.0 },
-      { userId: "U003", rating: 4.5 }
+      { userId: "U001", rating: 4.5 },
+      { userId: "U003", rating: 4.8 }
     ]
   },
   {
     productId: "P003",
-    name: "Monitor",
-    category: "Electronics",
-    price: 200,
-    stock: 100,
+    name: "Laptop",
+    category: "Computers",
+    price: 50000,
+    stock: 50,
     ratings: [
       { userId: "U002", rating: 5.0 },
-      { userId: "U001", rating: 4.8 }
+      { userId: "U001", rating: 4.9 }
     ]
   }
 ]);
 
 
 
-//Create Index for Geospatial Queries
+
+// Create Index for Geospatial Queries
 db.warehouses.createIndex({ location: "2dsphere" });
 
+// Queries
 
-
-Queries
-
-1. Find High-Spending Users
-
+// 1. Find High-Spending Users
 db.users.aggregate([
   {
     $lookup: {
@@ -163,7 +156,7 @@ db.users.aggregate([
   },
   {
     $match: {
-      totalSpent: { $gt: 500 }
+      totalSpent: { $gt: 10000 }
     }
   },
   {
@@ -178,10 +171,7 @@ db.users.aggregate([
 
 
 
-
-
-2. List Popular Products by Average Rating
-
+// 2. List Popular Products by Average Rating
 db.products.aggregate([
   {
     $unwind: "$ratings"
@@ -210,10 +200,7 @@ db.products.aggregate([
 
 
 
-
-
-3. Search for Orders in a Specific Time Range
-
+// 3. Search for Orders in a Specific Time Range
 db.orders.aggregate([
   {
     $match: {
@@ -248,10 +235,7 @@ db.orders.aggregate([
 
 
 
-
-
-4. Update Stock After Order Completion
-
+// 4. Update Stock After Order Completion
 db.orders.find({ orderId: "ORD001" }).forEach(order => {
   order.items.forEach(item => {
     db.products.updateOne(
@@ -264,13 +248,11 @@ db.orders.find({ orderId: "ORD001" }).forEach(order => {
 
 
 
-
-5. Find Nearest Warehouse
-
+// 5. Find Nearest Warehouse
 db.warehouses.aggregate([
   {
     $geoNear: {
-      near: { type: "Point", coordinates: [-74.006, 40.7128] },
+      near: { type: "Point", coordinates: [77.1025, 28.7041] }, // Delhi coordinates
       distanceField: "distance",
       maxDistance: 50000, // 50 kilometers in meters
       spherical: true,
